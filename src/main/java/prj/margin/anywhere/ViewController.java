@@ -1,6 +1,9 @@
 package prj.margin.anywhere;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +17,7 @@ public class ViewController {
 
     @GetMapping("/")
     public String home(Authentication auth, Model model) {
-//        if(Optional.ofNullable(auth).isEmpty()) return "redirect:/login";
+        if(Optional.ofNullable(auth).isEmpty()) return "redirect:/login";
 
         model.addAttribute("attr", LocalDateTime.now());
 
@@ -24,10 +27,13 @@ public class ViewController {
     public String login(Authentication authentication, Model model,
                         @RequestParam(name = "error", required = false) String error,
                         @RequestParam(name = "exception", required = false) String exception) {
-        if(Optional.ofNullable(authentication).isPresent() && authentication.isAuthenticated()) return "home";
+        if(Optional.ofNullable(authentication).isPresent() && authentication.isAuthenticated()) return "redirect:/";
 
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
+
+        System.out.println("error = " + error);
+        System.out.println("exception = " + exception);
 
         return "login";
     }

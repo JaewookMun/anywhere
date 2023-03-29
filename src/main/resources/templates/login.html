@@ -11,7 +11,7 @@
         <div class="text">
             Login Form
         </div>
-        <div th:if="${error}">wow</div>
+        <div th:if="${error}" th:text="${exception}"></div>
         <form method="post">
             <div class="data">
                 <label>loginId</label>
