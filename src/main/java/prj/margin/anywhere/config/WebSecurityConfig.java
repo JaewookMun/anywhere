@@ -41,7 +41,7 @@ public class WebSecurityConfig {
         http
                 .csrf().disable().cors().disable()
                 .authorizeHttpRequests(request -> request
-                        .antMatchers("/css/**", "/js/**").permitAll()
+                        .antMatchers("/css/**", "/js/**", "/modules/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login").permitAll()

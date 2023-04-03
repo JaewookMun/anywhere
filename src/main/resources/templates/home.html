@@ -7,7 +7,7 @@
     <div>
         <p th:text="'Hello, ' + ${attr} + '!'" />
         <div>
-            <button onclick="location.href='/logout'">logout</button>
+            <button class="btn btn-primary" onclick="location.href='/logout'">logout</button>
         </div>
     </div>
     <div th:replace="fragments/footer :: footer" />
