@@ -12,6 +12,7 @@ public class User {
 
     @Id @GeneratedValue
     private Long id;
+
     private String name;
 
     @Column(unique = true)
@@ -19,7 +20,9 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private Role role;
+
+    private String email;
 
     @Override
     public String toString() {
@@ -28,7 +31,8 @@ public class User {
                 ", name='" + name + '\'' +
                 ", loginId='" + loginId + '\'' +
                 ", password='" + password + '\'' +
-                ", userRole=" + userRole +
+                ", role=" + role +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

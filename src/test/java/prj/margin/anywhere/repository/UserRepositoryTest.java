@@ -9,11 +9,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import prj.margin.anywhere.domain.User;
-import prj.margin.anywhere.domain.UserRole;
-
-import javax.persistence.EntityManager;
-
-import static org.junit.jupiter.api.Assertions.*;
+import prj.margin.anywhere.domain.Role;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -44,7 +40,7 @@ class UserRepositoryTest {
     void testLoginID() {
         User user = new User();
         user.setName("mun");
-        user.setUserRole(UserRole.ADMIN);
+        user.setRole(Role.ADMIN);
         user.setLoginId("mun1103");
 
         userRepository.save(user);
