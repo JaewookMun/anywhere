@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+</head>
+<body>
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div>
+        <p th:text="'Hello, ' + ${attr} + '!'" />
+        <div>
+            <button class="btn btn-primary" onclick="location.href='/logout'">logout</button>
+        </div>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</body>
+</html>
