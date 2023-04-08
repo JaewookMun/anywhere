@@ -17,7 +17,6 @@ public class UserRepository {
         em.flush();
     }
 
-
     public Long save(User user) {
         em.persist(user);
 

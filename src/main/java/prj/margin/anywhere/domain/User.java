@@ -24,6 +24,8 @@ public class User {
 
     private String email;
 
+    private boolean deletedFlag;
+
     @Override
     public String toString() {
         return "User{" +
@@ -33,6 +35,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 ", email='" + email + '\'' +
+                ", deletedFlag=" + deletedFlag +
                 '}';
     }
 }
