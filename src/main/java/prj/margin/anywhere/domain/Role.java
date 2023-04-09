@@ -1,5 +1,5 @@
 package prj.margin.anywhere.domain;
 
 public enum Role {
-    ADMIN, USER;
+    ADMIN, USER, GUEST;
 }

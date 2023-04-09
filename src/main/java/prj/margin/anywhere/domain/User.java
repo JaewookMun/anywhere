@@ -1,12 +1,13 @@
 package prj.margin.anywhere.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
+@Builder
+@NoArgsConstructor
 @Getter @Setter
 public class User {
 
@@ -25,6 +26,20 @@ public class User {
     private String email;
 
     private boolean deletedFlag;
+
+    // builder 패턴을 적용해서 초기화하려고하는 필드만 주입하는 생성자 지정
+    @Builder
+    public User(String name, Role role, String email) {
+        this.name = name;
+        this.role = role;
+        this.email = email;
+    }
+
+    public User update(String name) {
+        this.name = name;
+
+        return this;
+    }
 
     @Override
     public String toString() {

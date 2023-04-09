@@ -19,6 +19,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    public Long save(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
     public User findOne(Long id) {
         return userRepository.findOne(id);
     }
@@ -26,6 +31,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findOneByLoginId(String loginId) {
         return Optional.ofNullable(userRepository.findOneByLoginId(loginId));
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return Optional.ofNullable(userRepository.findByEmail(email));
     }
 
     @Override
