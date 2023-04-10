@@ -41,14 +41,18 @@ public class WebSecurityConfig {
         http
                 .csrf().disable().cors().disable()
                 .authorizeHttpRequests(request -> request
+                        .antMatchers("/login/**", "oauth/**").permitAll()
                         .antMatchers("/css/**", "/js/**", "/modules/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
-                        .loginPage("/login").permitAll()
+                        .loginPage("/login?form")
                         .usernameParameter("loginId")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/"))
 //                        .failureHandler(customAuthenticationFailureHandler))
+                .oauth2Login(oauth2Login -> oauth2Login
+//                        .loginProcessingUrl("/login/google")
+                        .userInfoEndpoint())
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session
                         .maximumSessions(1)

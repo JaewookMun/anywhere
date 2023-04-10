@@ -8,6 +8,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+    open-in-view: false   # in point of view on OSIV, set this false.
+#  spring.profiles -> is deprecated
+#  profiles:
+#    include: oauth2
+  config:
+    import: application-oauth2.yml
 logging:
   level:
     org.springframework.security.core: debug
