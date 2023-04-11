@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import prj.margin.anywhere.config.auth.CustomAuthenticationFailureHandler;
+import prj.margin.anywhere.config.auth.CustomOAuth2UserService;
 import prj.margin.anywhere.config.auth.SimplePasswordEncoder;
 
 @Configuration
@@ -21,6 +22,7 @@ public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final CustomOAuth2UserService oAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -44,22 +46,24 @@ public class WebSecurityConfig {
                         .antMatchers("/login/**", "oauth/**").permitAll()
                         .antMatchers("/css/**", "/js/**", "/modules/**").permitAll()
                         .anyRequest().authenticated())
+                // .loginPage() - URL 을 별도로 설정하지 않으면 default 로그인 페이지가 제공됨.
                 .formLogin(form -> form
-                        .loginPage("/login?form")
+                        .loginPage("/login")
                         .usernameParameter("loginId")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/"))
 //                        .failureHandler(customAuthenticationFailureHandler))
                 .oauth2Login(oauth2Login -> oauth2Login
-//                        .loginProcessingUrl("/login/google")
-                        .userInfoEndpoint())
+                        .loginPage("/login")
+                        .userInfoEndpoint().userService(oAuth2UserService))
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(true)
                         .sessionRegistry(sessionRegistry())
                         .expiredUrl("/login?expired"))
-                .logout(logout -> logout.permitAll());
+                .logout(logout -> logout
+                        .permitAll());
 
         return http.build();
     }
