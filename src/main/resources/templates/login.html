@@ -7,6 +7,32 @@
     <link rel="stylesheet" href="/modules/bizland/css/bootstrap-icons.css">
 </head>
 <body>
+<style>
+.social-network {
+    text-align: center;
+    padding-top: 0.8rem;
+}
+
+.social-network p {
+    text-align: left;
+}
+
+.social-network a {
+    text-decoration: none;
+    margin: 0 7px;
+}
+
+.social-network .img-container {
+    margin-top: 1.5rem;
+}
+
+.social-network .img-google {
+    border: 1px solid #d1deded9;
+    border-radius: 8px;
+}
+
+
+</style>
 <div class="center">
     <div class="container">
         <div class="text">
@@ -27,12 +53,17 @@
             </div>
             <div class="social-network">
                 <p>Social Login</p>
-                <a data-name="google" href="/oauth2/authorization/google">
-                    <i class="bi bi-google"></i>
-                </a>
-                <a data-name="naver" href="/oauth2/authorization/naver">
-                    N
-                </a>
+                <div class="img-container">
+                    <a data-name="google" href="/oauth2/authorization/google">
+                        <img class="img-google" src="/images/oauth/google_btn.png" alt="google" width="69">
+                    </a>
+                    <a data-name="naver" href="/oauth2/authorization/naver">
+                        <img src="/images/oauth/naver/btnG_아이콘사각.png" alt="naver" width="70">
+                    </a>
+                    <a data-name="kakao" href="/oauth2/authorization/kakao">
+                        <img src="/images/oauth/kakao/kakaotalk_sharing_btn/kakaotalk_sharing_btn_medium.png" alt="kakao" width="70">
+                    </a>
+                </div>
             </div>
             <div class="btn">
                 <div class="inner"></div>
