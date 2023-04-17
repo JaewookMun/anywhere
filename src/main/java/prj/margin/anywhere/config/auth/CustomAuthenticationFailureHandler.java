@@ -7,6 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -25,6 +26,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         else if (exception instanceof InternalAuthenticationServiceException) errorMessage = "Couldn't deal with the problem for internal error. Please ask to administrator";
         else if (exception instanceof UsernameNotFoundException) errorMessage = "There is no account information please check again";
         else if (exception instanceof AuthenticationCredentialsNotFoundException) errorMessage = "request for authentication is rejected";
+        else if (exception instanceof SessionAuthenticationException) errorMessage = "currently, this account is active in web";
         else errorMessage = "login process has been failed for unknown reason";
         setDefaultFailureUrl("/login?error=true&exception=" + errorMessage);
 
