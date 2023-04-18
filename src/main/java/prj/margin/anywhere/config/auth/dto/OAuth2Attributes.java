@@ -22,6 +22,48 @@ public class OAuth2Attributes {
         this.email = email;
     }
 
+    public static OAuth2Attributes of(ResourceServerType resourceServerType, String userNameAttributeName, Map<String, Object> attributes) {
+        OAuth2Attributes oAuth2Attributes = null;
+        if(resourceServerType.getRegistrationId().equals(ResourceServerType.GOOGLE.getRegistrationId()))
+            oAuth2Attributes = ofGoogle(userNameAttributeName, attributes);
+        else if(resourceServerType.getRegistrationId().equals(ResourceServerType.NAVER.getRegistrationId()))
+            oAuth2Attributes = ofNaver("id", attributes);
+        else if (resourceServerType.getRegistrationId().equals(ResourceServerType.KAKAO.getRegistrationId()))
+            oAuth2Attributes = ofKakao("profile", attributes);
+
+        return oAuth2Attributes;
+    }
+
+    private static OAuth2Attributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes){
+
+        return OAuth2Attributes.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+
+    private static OAuth2Attributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        Map<String, Object> response=(Map<String, Object>)attributes.get("response");
+
+        return OAuth2Attributes.builder()
+                .name((String) response.get("name"))
+                .email((String) response.get("email"))
+                .attributes(response)
+                .nameAttributeKey(userNameAttributeName)
+                .build();
+    }
+
+    private static OAuth2Attributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+        Map<String, Object> response=(Map<String, Object>)attributes.get("kakao_account");
+
+        return OAuth2Attributes.builder()
+                .name((String) response.get("name"))
+                .email((String) response.get("email"))
+                .build();
+    }
+
     public User toEntity() {
         return User.builder()
                 .name(name)
