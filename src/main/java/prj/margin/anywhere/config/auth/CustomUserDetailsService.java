@@ -19,7 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
-        System.out.println("CustomUserDetailsService.loadUserByUsername");
 
         Optional<User> findOne = userService.findOneByLoginId(loginId);
         User user = findOne.orElseThrow(() -> new UsernameNotFoundException("There is no that User"));
@@ -31,6 +30,5 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .password(user.getPassword())
                 .roles(user.getRole().toString())
                 .build();
-
     }
 }

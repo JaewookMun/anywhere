@@ -22,13 +22,13 @@ public class OAuth2Attributes {
         this.email = email;
     }
 
-    public static OAuth2Attributes of(ResourceServerType resourceServerType, String userNameAttributeName, Map<String, Object> attributes) {
+    public static OAuth2Attributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         OAuth2Attributes oAuth2Attributes = null;
-        if(resourceServerType.getRegistrationId().equals(ResourceServerType.GOOGLE.getRegistrationId()))
+        if(registrationId.equals(ResourceServerType.GOOGLE.getRegistrationId()))
             oAuth2Attributes = ofGoogle(userNameAttributeName, attributes);
-        else if(resourceServerType.getRegistrationId().equals(ResourceServerType.NAVER.getRegistrationId()))
+        else if(registrationId.equals(ResourceServerType.NAVER.getRegistrationId()))
             oAuth2Attributes = ofNaver("id", attributes);
-        else if (resourceServerType.getRegistrationId().equals(ResourceServerType.KAKAO.getRegistrationId()))
+        else if (registrationId.equals(ResourceServerType.KAKAO.getRegistrationId()))
             oAuth2Attributes = ofKakao("profile", attributes);
 
         return oAuth2Attributes;
