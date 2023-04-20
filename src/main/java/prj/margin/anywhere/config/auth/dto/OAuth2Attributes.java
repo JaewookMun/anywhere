@@ -71,4 +71,14 @@ public class OAuth2Attributes {
                 .role(Role.GUEST)
                 .build();
     }
+
+    @Override
+    public String toString() {
+        return "OAuth2Attributes{" +
+                "attributes=" + attributes +
+                ", nameAttributeKey='" + nameAttributeKey + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

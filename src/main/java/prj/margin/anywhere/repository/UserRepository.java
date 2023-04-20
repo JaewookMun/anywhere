@@ -28,15 +28,18 @@ public class UserRepository {
     }
 
     public User findOneByLoginId(String loginId) {
-        return em.createQuery("select u from User u where u.loginId = :loginId", User.class)
+        List<User> resultList = em.createQuery("select u from User u where u.loginId = :loginId", User.class)
                 .setParameter("loginId", loginId)
-                .getResultList().get(0);
+                .getResultList();
+        return resultList.size() == 0 ? null : resultList.get(0);
     }
 
     public User findByEmail(String email) {
-        return em.createQuery("select u from User u where u.email = :email", User.class)
+        List<User> resultList = em.createQuery("select u from User u where u.email = :email", User.class)
                 .setParameter("email", email)
-                .getResultList().get(0);
+                .getResultList();
+
+        return resultList.size() == 0 ? null : resultList.get(0);
     }
 
     public List<User> findAll() {

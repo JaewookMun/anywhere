@@ -1,6 +1,8 @@
 package prj.margin.anywhere.config.auth;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -23,6 +25,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final UserService userService;
     private final HttpSession httpSession;
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomOAuth2UserService.class);
+
     @Override
     // OAuth2UserRequest -> OAuth2UserService가 UserInfo Endpoint 로 사용자 정보를 얻기위해
     // 요청을 보낼 때 사용하는 정보
@@ -39,8 +43,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         httpSession.setAttribute("user", user);
 
-        System.out.println(user);
-        System.out.println("attributes" + attributes);
+        logger.debug(user.toString());
+        logger.debug("attributes: " + attributes);
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString())),
@@ -56,5 +60,4 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         userService.save(findOne);
         return findOne;
     }
-
 }
