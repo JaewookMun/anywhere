@@ -39,6 +39,7 @@ public class WebSecurityConfig {
                         .failureHandler(customAuthenticationFailureHandler))
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/login")
+                        .failureHandler(customAuthenticationFailureHandler)
                         .userInfoEndpoint().userService(oAuth2UserService))
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session
