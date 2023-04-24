@@ -1,5 +1,7 @@
 package prj.margin.anywhere.config.auth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -18,6 +20,8 @@ import java.io.IOException;
 @Component
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
+    private final Logger logger = LoggerFactory.getLogger(CustomAuthenticationFailureHandler.class);
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String errorMessage = "";
@@ -29,6 +33,9 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
         else if (exception instanceof SessionAuthenticationException) errorMessage = "currently, this account is active in web";
         else errorMessage = "login process has been failed for unknown reason";
         setDefaultFailureUrl("/login?error=true&exception=" + errorMessage);
+
+        logger.debug(exception.getMessage());
+        exception.printStackTrace();
 
         super.onAuthenticationFailure(request, response, exception);
     }
