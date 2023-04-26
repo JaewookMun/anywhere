@@ -1,9 +1,8 @@
-package prj.margin.anywhere;
+package prj.margin.anywhere.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,9 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
-public class ViewController {
+public class WebController {
+
+    private static final Logger log = LoggerFactory.getLogger(WebController.class);
 
     @GetMapping("/")
     public String home(Authentication auth, Model model) {
@@ -32,17 +33,6 @@ public class ViewController {
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
 
-        System.out.println("error = " + error);
-        System.out.println("exception = " + exception);
-
         return "login";
     }
-
-//    @GetMapping("/logout")
-//    public String logout(Authentication authentication) {
-//
-//        System.out.println("logout");
-//
-//        return "/login";
-//    }
 }
