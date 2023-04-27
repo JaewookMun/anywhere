@@ -1,6 +1,7 @@
 package prj.margin.anywhere.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,9 +13,11 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 import prj.margin.anywhere.config.auth.CustomAuthenticationFailureHandler;
 import prj.margin.anywhere.config.auth.CustomOAuth2UserService;
 import prj.margin.anywhere.config.auth.SimplePasswordEncoder;
+import prj.margin.anywhere.config.auth.dto.ApplicationOAuth2NaverProperties;
 
 @Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties(ApplicationOAuth2NaverProperties.class)
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
