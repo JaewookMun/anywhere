@@ -9,14 +9,16 @@ spring:
     hibernate:
       ddl-auto: create-drop
     open-in-view: false   # in point of view on OSIV, set this false.
-#  spring.profiles -> is deprecated
-#  profiles:
-#    include: oauth2
+  #  spring.profiles -> is deprecated
+  #  profiles:
+  #    include: oauth2
   config:
     import: application-oauth2.yml
+#    activate:
+#      on-profile: test
 
-#logging:
-#  level:
-#    root: info
-#    org.springframework.security.core: debug
-#    prj.margin.anywhere.config: debug
+logging:
+  level:
+    root: info
+    org.springframework.security.core: debug
+    prj.margin.anywhere.config: debug
