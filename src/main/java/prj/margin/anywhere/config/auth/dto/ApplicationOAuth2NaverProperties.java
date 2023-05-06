@@ -9,4 +9,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationOAuth2NaverProperties {
     private String clientId;
     private String clientSecret;
+
+
+    @Override
+    public String toString() {
+        return "ApplicationOAuth2NaverProperties{" +
+                "clientId='" + clientId + '\'' +
+                ", clientSecret='" + clientSecret + '\'' +
+                '}';
+    }
 }
