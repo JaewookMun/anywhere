@@ -7,8 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMethod;
 import prj.margin.anywhere.config.auth.dto.ApplicationOAuth2NaverProperties;
+import prj.margin.anywhere.service.dto.NaverResponseDto;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +18,7 @@ import java.util.Map;
 @SpringBootTest
 class HttpConnectionTest {
     @Autowired
-    private HttpConnection httpConnection;
+    private HttpConnection<NaverResponseDto> httpConnection;
     @Autowired
     private ApplicationOAuth2NaverProperties oAuth2NaverProperties;
 
@@ -33,17 +35,21 @@ class HttpConnectionTest {
         // when
 
         // given
-        String url = ApiDomain.NAVER_SEARCH_MAP.getUrl();
+//        String url = ApiDomain.NAVER_SEARCH_MAP.getUrl();
+        String url = "https://openapi.naver.com/v1/search/local.json";
         RequestMethod requestMethod = RequestMethod.GET;
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Naver-Client-Id", oAuth2NaverProperties.getClientId());
         headers.put("X-Naver-Client-Secret", oAuth2NaverProperties.getClientSecret());
         headers.put("Accept", "*/*");
-        String queryString = "query=서울";
+        String search = URLEncoder.encode("서울", "UTF-8");
+        System.out.println("search = " + search);
+        String queryString = "?query=" + search;
+
 
         // then
-        httpConnection.sendRequest(url, requestMethod, headers, queryString);
-
+        NaverResponseDto naverResponseDto = httpConnection.sendRequest(url, requestMethod, headers, queryString, NaverResponseDto.class);
+        System.out.println("naverResponseDto = " + naverResponseDto);
 
     }
 }
