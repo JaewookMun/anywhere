@@ -31,8 +31,8 @@ dependencies {
 	implementation 'org.mariadb.jdbc:mariadb-java-client'
 
 	implementation 'junit:junit:4.13.1'
-	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
+	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	implementation 'org.springframework.security:spring-security-test'

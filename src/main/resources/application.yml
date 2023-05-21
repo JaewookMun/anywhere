@@ -1,7 +1,7 @@
 # reference - https://spring.io/guides/gs/accessing-data-mysql/
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/D:/h2/anywhere
+    url: jdbc:h2:tcp://localhost/D:/h2/anywhere;MODE=MySQL;NON_KEYWORDS=USER
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -9,7 +9,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
     open-in-view: false   # in point of view on OSIV, set this false.
-#  spring.profiles -> is deprecated
+  #  spring.profiles -> is deprecated
 #  profiles:
 #    include: oauth2
   config:
