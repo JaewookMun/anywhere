@@ -29,8 +29,9 @@ public class ApiService {
         Map<String, String> headers = getHeaders(ResourceServerType.NAVER.getRegistrationId());
 
         String queryString = NaverApiParamDto.builder()
-                .query(createQuery(keyword))
-                .display(10)
+                .query(encodeKeyword(keyword))
+//                .query("%EC%A3%BC%EC%8B%9D")
+                .display(5) // 5개 까지가 최대
                 .start(1)
                 .sort("random")
                 .build()
@@ -39,11 +40,9 @@ public class ApiService {
         httpConnection.sendRequest(ApiDomain.NAVER_SEARCH_MAP.getUrl(), RequestMethod.GET, headers, queryString, NaverResponseDto.class);
     }
 
-    private String createQuery(String keyword) throws UnsupportedEncodingException {
-        StringBuilder sb = new StringBuilder();
+    private String encodeKeyword(String keyword) throws UnsupportedEncodingException {
         String encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
-        sb.append("?").append("query").append("=").append(encodedKeyword);
-        return sb.toString();
+        return encodedKeyword;
     }
 
     /**

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter @Setter
 public class NaverApiParamDto {
     /**
-     * 필수
+     * {필수} keyword
      */
     private String query;
 

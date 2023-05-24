@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +15,6 @@ import prj.margin.anywhere.service.dto.NaverResponseDto;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,8 +29,42 @@ public class HttpConnection<T> {
      *
      * {@link java.net.HttpURLConnection} is used
      */
-    public T sendRequest(String apiUrl, RequestMethod requestMethod, Map<String, String> headers, String queryString, Class<T> type) throws IOException {
+    public T sendRequest(String apiUrl, RequestMethod requestMethod, Map<String, String> headers, String queryString, Class<T> responseType) throws IOException {
         apiUrl = apiUrl + queryString;
+        HttpURLConnection con = getHttpURLConnection(apiUrl, requestMethod, headers);
+
+        int httpStatus = con.getResponseCode();
+        logger.info("[HTTP_STATUS]: " + httpStatus);
+
+        NaverResponseDto naverResponseDto = null;
+
+        if(httpStatus == HttpURLConnection.HTTP_OK) {
+
+            String response = readBody(con.getInputStream());
+            logger.info("[RESPONSE]: " + response);
+
+            // todo : 검색되는 대상에 대한 list 반환
+            if(responseType == NaverResponseDto.class) naverResponseDto = convertToDto(response);
+
+        }
+        else System.out.println("error: " + httpStatus); // todo: 실패
+
+        return responseType.cast(naverResponseDto);
+    }
+
+    private NaverResponseDto convertToDto(String response) throws JsonProcessingException {
+
+        // RFC_1123_DATE_TIME -> "Mon, 08 May 2023 01:59:19 +0900"
+        DateTimeFormatter timeFormatter = DateTimeFormatter.RFC_1123_DATE_TIME;
+        ObjectMapper jsonMapper = new ObjectMapper();
+        jsonMapper.registerModule(getTimeModule(timeFormatter));
+
+        NaverResponseDto naverResponseDto = jsonMapper.readValue(response, NaverResponseDto.class);
+
+        return naverResponseDto;
+    }
+
+    private HttpURLConnection getHttpURLConnection(String apiUrl, RequestMethod requestMethod, Map<String, String> headers) throws IOException {
         URL url = new URL(apiUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod(requestMethod.toString());
@@ -47,38 +78,19 @@ public class HttpConnection<T> {
             System.out.println(header.getKey() + ", " + header.getValue());
         }
 
-        // set parameters
-//        con.setDoOutput(true);
-//        DataOutputStream out = new DataOutputStream(con.getOutputStream());
-//        out.writeBytes(queryString);
-//        out.flush();
-//        out.close();
+        // set parameters for POST
+        if(requestMethod.equals(RequestMethod.POST)) {
+            con.setDoOutput(true);
+            DataOutputStream out = new DataOutputStream(con.getOutputStream());
+            out.writeBytes(apiUrl.substring(apiUrl.indexOf("?")));
+            out.flush();
+            out.close();
 
-//        con.setConnectTimeout(5000);
-//        con.setReadTimeout(5000);
-
-        int httpStatus = con.getResponseCode();
-        logger.info("[HTTP_STATUS]: " + httpStatus);
-
-        NaverResponseDto naverResponseDto = null;
-
-        if(httpStatus == HttpURLConnection.HTTP_OK) {
-
-            String response = readBody(con.getInputStream());
-            logger.info("[RESPONSE]: " + response);
-
-            // RFC_1123_DATE_TIME -> "Mon, 08 May 2023 01:59:19 +0900"
-            DateTimeFormatter timeFormatter = DateTimeFormatter.RFC_1123_DATE_TIME;
-
-            ObjectMapper jsonMapper = new ObjectMapper();
-            jsonMapper.registerModule(getTimeModule(timeFormatter));
-
-            naverResponseDto = jsonMapper.readValue(response, NaverResponseDto.class);
-
+            con.setConnectTimeout(5000);
+            con.setReadTimeout(5000);
         }
-        else System.out.println("error: " + httpStatus); // todo: 실패
 
-        return type.cast(naverResponseDto);
+        return con;
     }
 
     /**
